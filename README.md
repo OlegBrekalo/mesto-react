@@ -1,6 +1,6 @@
 # Проект 4: Mesto-React
 ### Maroon-15 Олег Брекало для Яндекс.Практикум
-## URL:https://olegbrekalo.github.io/mesto/index.html
+## URL:https://olegbrekalo.github.io/mesto-react/
 ## Задача проекта
 
 Полноценный SAS. Теперь и на React. Первый опыт работы с новым фреймворком, портирование уже существующего проекта на нативном JS на новую платформу.

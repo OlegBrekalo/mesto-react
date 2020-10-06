@@ -1,11 +1,20 @@
 import React from "react";
 
-function PopupWithForm({ isOpen, title, name, childForm, onClose}) {
+function PopupWithForm({
+  isOpen,
+  title,
+  name,
+  childForm,
+  onClose,
+  handleClickOutside,
+}) {
   let popupStyle = `popup popup-${name}`;
-  if (isOpen) {popupStyle += " popup_opened"}
+  if (isOpen) {
+    popupStyle += " popup_opened";
+  }
 
   return (
-    <div className={popupStyle} onClick={onClose}>
+    <div className={popupStyle} onClick={handleClickOutside}>
       <div className="popup__container popup__container_type_form">
         <button type="button" className="popup__close-icon" onClick={onClose} />
         <p className="popup__title">{title}</p>

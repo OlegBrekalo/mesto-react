@@ -8,22 +8,24 @@ import FormEditProfile from "./FormEditProfile";
 import FormAddPlace from "./FormAddPlace";
 import FormEditAvatar from "./FormEditAvatar";
 
-import api from "../utils/Api";
+import api from "../utils/api";
 
-function Main() {
-  const [isEditProfileOpen, setEditProfileOpen] = useState(false);
-  const [isAddPlaceOpen, setAddPlaceOpen] = useState(false);
-  const [isEditAvatarOpen, setEditAvatarOpen] = useState(false);
-  const [isImageOpen, setImageOpen] = useState(false);
-
+function Main({
+  isEditProfileOpen,
+  setEditProfileOpen,
+  isAddPlaceOpen,
+  setAddPlaceOpen,
+  isEditAvatarOpen,
+  setEditAvatarOpen,
+  selectedCard,
+  setSelectedCard,
+}) {
   const [profile, setProfile] = useState({
     name: "",
     about: "",
   });
   const [avatar, setAvatar] = useState();
-
   const [cards, setCards] = useState([]);
-  const [selectedCard, setSelectedCard] = useState({ src: "", subtitle: "" });
 
   useEffect(() => {
     Promise.all([api.getUserInfo(), api.getCards()])
@@ -46,24 +48,29 @@ function Main() {
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyPress);
-  }, [isEditProfileOpen, isAddPlaceOpen, isEditAvatarOpen, isImageOpen]);
+  }, [isEditProfileOpen, isAddPlaceOpen, isEditAvatarOpen, selectedCard]);
 
   const closeAllPopups = () => {
     setEditProfileOpen(false);
     setAddPlaceOpen(false);
     setEditAvatarOpen(false);
-    setImageOpen(false);
+
+    setSelectedCard(null);
 
     document.removeEventListener("keydown", handleKeyPress);
   };
 
-  const handlerCardImageClick = (evt) => {
+  const handleClosePopupByClickOutside = (evt) => {
+    if (evt.currentTarget === evt.target) {
+      closeAllPopups();
+    }
+  };
+
+  const handleClick = (link, name) => {
     setSelectedCard({
-      src: evt.target.src,
-      subtitle: evt.target.parentNode.querySelector(".element__title")
-        .textContent,
+      src: link,
+      subtitle: name,
     });
-    setImageOpen(true);
   };
 
   return (
@@ -78,15 +85,16 @@ function Main() {
       <section className="elements content-section">
         <ul className="elements__img-grid">
           {cards.map(({ _id, ...item }) => (
-            <Card key={_id} onClick={handlerCardImageClick} {...item} />
+            <Card key={_id} {...item} handleClick={handleClick} />
           ))}
         </ul>
       </section>
 
       <PopupWithImage
-        isOpen={isImageOpen}
+        isOpen={!!selectedCard}
         {...selectedCard}
         onClose={closeAllPopups}
+        handleClickOutside={handleClosePopupByClickOutside}
       />
 
       <PopupWithForm
@@ -101,6 +109,7 @@ function Main() {
           />
         }
         onClose={closeAllPopups}
+        handleClickOutside={handleClosePopupByClickOutside}
       />
 
       <PopupWithForm
@@ -111,11 +120,11 @@ function Main() {
           <FormAddPlace
             cards={cards}
             setCards={setCards}
-            addNewPlace={setProfile}
             onClose={closeAllPopups}
           />
         }
         onClose={closeAllPopups}
+        handleClickOutside={handleClosePopupByClickOutside}
       />
 
       <PopupWithForm
@@ -126,6 +135,7 @@ function Main() {
           <FormEditAvatar setAvatar={setAvatar} onClose={closeAllPopups} />
         }
         onClose={closeAllPopups}
+        handleClickOutside={handleClosePopupByClickOutside}
       />
     </main>
   );

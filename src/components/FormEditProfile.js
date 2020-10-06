@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import api from "../utils/Api";
+import api from "../utils/api";
 
 function FormEditProfile({ profile, setProfile, onClose }) {
   const [name, setName] = React.useState('');

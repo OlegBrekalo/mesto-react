@@ -1,13 +1,19 @@
 import React from "react";
 
-function PopupWithImage({ isOpen, src, subtitle, onClose }) {
+function PopupWithImage({
+  isOpen,
+  src,
+  subtitle,
+  onClose,
+  handleClickOutside,
+}) {
   let popupStyle = `popup`;
   if (isOpen) {
     popupStyle += " popup_opened";
   }
 
   return (
-    <div className={popupStyle} onClick={onClose}>
+    <div className={popupStyle} onClick={handleClickOutside}>
       <div className="popup__container">
         <button
           type="button"

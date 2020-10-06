@@ -1,6 +1,9 @@
 import React from "react";
+import {onErrorMockImage} from '../utils/constants';
 
-function Card({ name, link, likes, onClick }) {
+function Card({ name, link, likes, handleClick }) {
+
+
   return (
     <li className="element">
       <button type="button" className="element__remove-icon"></button>
@@ -8,10 +11,9 @@ function Card({ name, link, likes, onClick }) {
         src={link}
         alt="#"
         className="element__image"
-        onClick={onClick}
+        onClick={() => {handleClick.call(this, link, name)}}
         onError={(evt) => {
-          evt.target.src =
-            "https://images.unsplash.com/photo-1458419948946-19fb2cc296af?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80";
+          evt.target.src = onErrorMockImage;
         }}
       />
       <div className="element__footer">

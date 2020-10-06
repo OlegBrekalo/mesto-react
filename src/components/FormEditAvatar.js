@@ -1,5 +1,5 @@
 import React from "react";
-import api from "../utils/Api";
+import api from "../utils/api";
 
 function FormEditAvatar({ setAvatar, onClose }) {
   const [newAvatar, setNewAvatar] = React.useState("");

@@ -1,18 +1,19 @@
-import React from "react";
-import api from "../utils/api";
+import React, { useRef } from "react";
 
-function FormAddPlace({cards, setCards, onClose}) {
+function AddPlaceForm({ onSubmit }) {
   const [newName, setNewName] = React.useState("");
   const [newSrc, setNewSrc] = React.useState("");
 
-  const handleSubmit = (evt) =>{
+  const buttonRef = useRef(null);
+
+  const handleSubmit = (evt) => {
     evt.preventDefault();
-    api.addNewCard(newName, newSrc)
-      .then( (newCard)=>{
-        setCards([newCard, ...cards]);
-        onClose();
-      });
-  }
+    const cleanUp = () => {
+      setNewName("");
+      setNewSrc("");
+    };
+    onSubmit(newName, newSrc, buttonRef, cleanUp);
+  };
 
   return (
     <form className="popup__form" autoComplete="off" onSubmit={handleSubmit}>
@@ -26,7 +27,8 @@ function FormAddPlace({cards, setCards, onClose}) {
           maxLength={30}
           placeholder="Название"
           className="popup__input-text add-form__input-text_type_name"
-          onChange={ (evt) => setNewName(evt.target.value)}
+          value={newName}
+          onChange={(evt) => setNewName(evt.target.value)}
         />
         <span id="add-form_name-error" className="popup__input-error" />
       </label>
@@ -38,15 +40,16 @@ function FormAddPlace({cards, setCards, onClose}) {
           required
           placeholder="Ссылка на картинку"
           className="popup__input-text add-form__input-text_type_src"
-          onChange={ (evt) => setNewSrc(evt.target.value)}
+          value={newSrc}
+          onChange={(evt) => setNewSrc(evt.target.value)}
         />
         <span id="add-form_src-error" className="popup__input-error" />
       </label>
-      <button type="submit" className="popup__submit-button">
+      <button type="submit" className="popup__submit-button" ref={buttonRef}>
         Создать
       </button>
     </form>
   );
 }
 
-export default FormAddPlace;
+export default AddPlaceForm;

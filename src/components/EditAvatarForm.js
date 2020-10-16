@@ -1,21 +1,15 @@
-import React from "react";
-import api from "../utils/api";
+import React, { useRef } from "react";
 
-function FormEditAvatar({ setAvatar, onClose }) {
-  const [newAvatar, setNewAvatar] = React.useState("");
+function EditAvatarForm({ onSubmit }) {
+  const avatarInput = useRef(null);
+  const buttonRef = useRef(null);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    console.log(api);
-    api
-      .updateUserAvatar(newAvatar)
-      .then((data) => {
-        setAvatar(data.avatar);
-        onClose();
-      })
-      .catch(() => {
-        console.log("ERROR");
-      });
+    const cleanUp = () => {
+      avatarInput.current.value = "";
+    };
+    onSubmit(avatarInput.current.value, buttonRef, cleanUp);
   };
 
   return (
@@ -28,16 +22,15 @@ function FormEditAvatar({ setAvatar, onClose }) {
           required
           placeholder="Ссылка на аватар"
           className="popup__input-text avatar-form__input-text_type_src"
-          value={newAvatar}
-          onChange={(evt) => setNewAvatar(evt.target.value)}
+          ref={avatarInput}
         />
         <span id="avatar-form_src-error" className="popup__input-error" />
       </label>
-      <button type="submit" className="popup__submit-button">
+      <button type="submit" className="popup__submit-button" ref={buttonRef}>
         Сохранить
       </button>
     </form>
   );
 }
 
-export default FormEditAvatar;
+export default EditAvatarForm;

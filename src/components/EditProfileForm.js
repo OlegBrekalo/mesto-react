@@ -1,27 +1,23 @@
-import React, { useEffect } from "react";
-import api from "../utils/api";
+import React, { useEffect, useRef } from "react";
+import { CurrentUserContext } from "../contexts/currentUser";
 
-function FormEditProfile({ profile, setProfile, onClose }) {
-  const [name, setName] = React.useState('');
-  const [about, setAbout] = React.useState('');
+function EditProfileForm({ onSubmit }) {
+  const [currentUser] = React.useContext(CurrentUserContext);
+
+  const [name, setName] = React.useState("");
+  const [about, setAbout] = React.useState("");
+
+  const buttonRef = useRef(null);
 
   useEffect(() => {
-    setName(profile.name);
-    setAbout(profile.about);
-  }, [profile]);
+    setName(currentUser.name);
+    setAbout(currentUser.about);
+  }, [currentUser]);
 
-  const handleSubmit = (evt) =>{
+  function handleSubmit(evt) {
     evt.preventDefault();
-    api
-      .updateUserInfo(name, about)
-      .then((userInfo) => {
-        setProfile({ name: userInfo.name, about: userInfo.about });
-        onClose();
-      })
-      .catch(() => {
-        console.log("ERROR");
-      });
-  };
+    onSubmit(name, about, buttonRef);
+  }
 
   return (
     <form className="popup__form" autoComplete="off" onSubmit={handleSubmit}>
@@ -53,11 +49,11 @@ function FormEditProfile({ profile, setProfile, onClose }) {
         />
         <span id="edit-form_about-error" className="popup__input-error" />
       </label>
-      <button type="submit" className="popup__submit-button">
+      <button type="submit" className="popup__submit-button" ref={buttonRef}>
         Сохранить
       </button>
     </form>
   );
 }
 
-export default FormEditProfile;
+export default EditProfileForm;

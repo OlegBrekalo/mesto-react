@@ -4,7 +4,7 @@ import Card from "./Card";
 import { CurrentUserContext } from "../contexts/currentUser";
 
 function Main({ handlersProfile, cards, handlersCard }) {
-  const [currentUser] = React.useContext(CurrentUserContext);
+  const currentUser = React.useContext(CurrentUserContext);
 
   return (
     <main>

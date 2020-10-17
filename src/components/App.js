@@ -197,7 +197,7 @@ function App() {
   //#endregion
   return (
     <div className="content">
-      <CurrentUserContext.Provider value={[currentUser, setCurrentUser]}>
+      <CurrentUserContext.Provider value={currentUser}>
         <Header />
         <Main
           cards={cards}

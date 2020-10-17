@@ -3,10 +3,10 @@ import { onErrorMockImage } from "../utils/constants";
 import { CurrentUserContext } from "../contexts/currentUser";
 
 function Card({ id, name, link, likes, owner, onClick, onLike, onDelete }) {
-  const [currentUser, setCurrentUser] = React.useContext(CurrentUserContext);
+  const currentUser = React.useContext(CurrentUserContext);
 
   const isLiked = !!(
-    likes.length != 0 &&
+    likes.length !== 0 &&
     likes.find((like) => {
       return like._id === currentUser.id;
     })
